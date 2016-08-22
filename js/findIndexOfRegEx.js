@@ -10,5 +10,8 @@ function findIndexOfRegEx(val) {
     }
 }
 
-var str = "this is number 1 string";
-var s = s.search(/number/gi);  // 8 
+
+// -----------------------------------------
+
+var str = "this is ABCD string";
+var s = str.search(/ABCD/gi);  // ABCD index number is --> 8 
