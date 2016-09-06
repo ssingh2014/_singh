@@ -1,1 +1,30 @@
 
+Project Name - content-singh
+
+PARAMETERS
+
+String parameter
+	Name - APP_NAME
+	Default value - youtube.com
+String parameter
+	Name - FUNCTION_NAME
+	Default value - watchVideo	
+Text parameter
+	Name - QUERY
+	Default value - latest songs		
+	
+SOURCE CODE MANAGEMENT
+Git
+	Repositories	
+		Repository URL - git@github.com:QY/content-pro
+	Branches to build
+		Branch Specifier - */master
+	Repository browser	- AssemblaWeb	
+	
+	
+EXECUTE SHELL
+	Command	- cd search_query
+			- echo ------------------
+			- python query_run.py -a ${APP_NAME} -f ${FUNCTION_NAME} -q "${QUERY}" -v ${VERTICAL} -s ${SCORE} -m ${MAX_RANK} -pn ${POSITIVE_NEGATIVE} -src "${SOURCE}"
+
+SAVE -- APPLY
