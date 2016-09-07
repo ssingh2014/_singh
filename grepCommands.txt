@@ -1,7 +1,10 @@
 bz2 file -- compressed file
   
-  --> LINE COUNT
+  ---- LINE COUNT
   --> bzgrep -c "venueId" /Users/ssingh/Public/2016-08-02-13_46_31.112/domain2_foursquare_com_localbusiness_category2_56.bz2
         - In this case -c instruct the command to output number of matched lines and the regex "venueId" matches unique key in the line 
         - so it matches every line or the file
-        
+  
+  ---- FIND WORD      
+  --> grep -r “serch_text” /Users/ssingh/s3/2016-06-27-20_00_03.111
+  --> bzgrep  -r “serch_text” /Users/ssingh/s3/2016-06-27-20_00_03.111
