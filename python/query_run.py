@@ -17,8 +17,19 @@ def func_update_query_obj(ip_query, ip_vertical, ip_score, ip_max_rank):
     return pN_obj
 
 
-def func_addFunction_obj(input_func_name, input_ps_neg, input_query, input_vertical, input_score, input_max_rank):
-    # func_obj = {"function": input_func_name, "positive": [], "negative": [], "sources": input_sources}
+def func_update_sources_UNIQUE(obj, ip_sources):
+    input_srcAry = map(str.strip, ip_sources.split(','))
+    for aryVal in input_srcAry:
+        obj["sources"].append(aryVal)
+
+    unique_srcAry = []
+    [unique_srcAry.append(item) for item in obj["sources"] if item not in unique_srcAry]
+
+    print "New UNIQUE Sources list --> " + str(unique_srcAry)
+    return unique_srcAry
+
+
+def func_addFunction_obj(input_func_name, input_ps_neg, input_query, input_vertical, input_score, input_max_rank, input_sources):
     func_obj = {"function": input_func_name, "positive": [], "negative": [], "sources": []}
 
     # create positive/negative object
@@ -93,17 +104,18 @@ if __name__ == "__main__":
     input_sources = args.sources
 
     icon = u'\u25b2'
-    print(icon.encode('utf-8') * 140)
+
+    print("\n" + icon.encode('utf-8') * 140)
     print "Input Func Name:--> \"" + input_func_name + "\" <------ Input object --> \"" + input_ps_neg + "\" <------ Input query:--> \"" + input_query + "\""
-    print(icon.encode('utf-8') * 140)
+    print(icon.encode('utf-8') * 140 + "\n")
 
     #  check and remove content-processing directory
     os.system("rm -rf /mnt/tmp/search-config")
 
     # clone content-processing repo
     os.system("cd /mnt/tmp && git clone git@github.com:quixey/search-config.git")
-    print "x1.."
     # print "cd /mnt/tmp && git clone git@github.com:quixey/search-config.git"
+    print "Remove existing directory & Cloned \"search-config\" --> "
 
     os.system("cd /mnt/tmp/search-config && git fetch")
     os.system("cd /mnt/tmp/search-config && git checkout master")
@@ -113,7 +125,7 @@ if __name__ == "__main__":
 
     path = "/mnt/tmp/search-config/prod_config/v4/queries.json"
 
-    print path
+    print "queries.json file path --> " + str(path) + "\n"
 
     with open(path, 'r') as data_file:
         data = json.load(data_file)
@@ -123,7 +135,8 @@ if __name__ == "__main__":
 
     # ADD new function - if it doesn't exist
     if chkFunc == None:
-        add_func_obj = func_addFunction_obj(input_func_name, input_ps_neg, input_query, input_vertical, input_score,  input_max_rank)
+        add_func_obj = func_addFunction_obj(input_func_name, input_ps_neg, input_query, input_vertical, input_score,
+                                            input_max_rank, input_sources)
         print "ADDED - New Function Object ---->  " + str(add_func_obj) + "\n"
 
         with open(path, mode="w") as data_file_1:
@@ -132,11 +145,19 @@ if __name__ == "__main__":
 
         print "\n FINAL OUTPUT data file ---->  " + str(data) + "\n\n"
 
+
     # UPDATE function - if it exist
     elif chkFunc != None:
         print "Existing function object --> " + str(chkFunc) + "\n"
         qry = query_exist(chkFunc, input_query, input_ps_neg, input_vertical, input_score, input_max_rank)
 
+
+        # UPDATE SOURCES list --> "UNIQUE" source list
+        new_add_unq_src = func_update_sources_UNIQUE(chkFunc, input_sources)
+        chkFunc["sources"] = list(new_add_unq_src)
+
+
+        # UPDATE query object after checking if "query" exist or not
         if qry == None:
             add_obj = func_add_query_obj(input_query, input_vertical, input_score, input_max_rank)
             add_dd = chkFunc[input_ps_neg]
@@ -173,12 +194,12 @@ if __name__ == "__main__":
                 print "\nUPDATED Function object -----> " + str(chkFunc)
                 json.dump(data, data_file_2)
 
-            print "\nFINAL OUTPUT data file ---->  " + str(data) + "\n\n"
+            print ("\n\033[34m {}\033[00m".format("FINAL OUTPUT data file ----> \t" + str(data)) + "\n")
 
     os.system("cd /mnt/tmp/search-config && git add '/mnt/tmp/search-config/prod_config/v4/queries.json'")
     os.system("cd /mnt/tmp/search-config && git commit -m 'committing merge' ")
     os.system("cd /mnt/tmp/search-config && git push git@github.com:quixey/search-config.git")
 
+    print "\n"
 
-# passing arguments
-# python query_run.py -a espn.go.com -f findValues -q soccer44 -v ecoM -s 6 -m 66 -pn negative -src "s2" 
+
