@@ -8,3 +8,11 @@ bz2 file -- compressed file
   ---- FIND WORD      
   --> grep -r “serch_text” /Users/ssingh/s3/2016-06-27-20_00_03.111
   --> bzgrep  -r “serch_text” /Users/ssingh/s3/2016-06-27-20_00_03.111
+
+  ---- grep with REGEX - GET actual records     
+  --> grep -i "\"address\":\"[^0-9a-zA-Z]" /Users/ssingh/Documents/WIP/v4/groupon.com/domain2_groupon_com_deal_category21
+        - grep field name address not begining with either number or alphabet
+  
+  ---- grep COUNT records using REGEX - GET number of records         
+  --> egrep -c "\"address\":\"[0-9]" /Users/ssingh/Documents/WIP/v4/groupon.com/domain2_groupon_com_deal_category21
+        - count number of records where -- field name address begining with a number
