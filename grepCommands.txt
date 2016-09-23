@@ -16,3 +16,6 @@ bz2 file -- compressed file
   ---- grep COUNT records using REGEX - GET number of records         
   --> egrep -c "\"address\":\"[0-9]" /Users/ssingh/Documents/WIP/v4/groupon.com/domain2_groupon_com_deal_category21
         - count number of records where -- field name address begining with a number
+
+---- grep COUNT records using REGEX - GET number of records --- SUM THE LINE OUPUT NUMBER ---- PRINT SUM        
+  --> grep -r -c "2016-09-23" /Users/ssingh/s3/abcnews.go.com/*/iibe/part-* | egrep "part-00000:(\d*)" -o | egrep ":(\d+)" -o | egrep "(\d+)" -o | awk '{ SUM += $1} END { print SUM}'
