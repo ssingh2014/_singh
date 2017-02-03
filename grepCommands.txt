@@ -19,3 +19,8 @@ bz2 file -- compressed file
 
 ---- grep COUNT records using REGEX - GET number of records --- SUM THE LINE OUPUT NUMBER ---- PRINT SUM        
   --> grep -r -c "2016-09-23" /Users/ssingh/s3/abcnews.go.com/*/iibe/part-* | egrep "part-00000:(\d*)" -o | egrep ":(\d+)" -o | egrep "(\d+)" -o | awk '{ SUM += $1} END { print SUM}'
+
+
+---- GET ABSOLUTE PATH in LINUX
+  --> find $PWD -type f -name "hello123.js"
+      - /Users/ssingh/Desktop/hello123.js
